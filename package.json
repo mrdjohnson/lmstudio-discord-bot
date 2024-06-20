@@ -12,6 +12,8 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@lmstudio/sdk": "^0.0.12",
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },

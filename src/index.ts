@@ -1,10 +1,12 @@
-import { LMStudioClient } from "@lmstudio/sdk";
+import 'dotenv/config';
+import { LMStudioClient } from '@lmstudio/sdk';
+
+// ! in typescript just says these are not null
+const CLIENT_TOKEN = process.env.CLIENT_TOKEN!;
+const CLIENT_ID = process.env.CLIENT_ID!;
+const GUILD_ID = process.env.GUILD_ID!;
 
 async function main() {
-  const client = new LMStudioClient();
-  console.log("👾👾 Welcome to my new project! 👾👾");
-  console.log("\nDownloaded models:\n");
-  console.log(await client.system.listDownloadedModels());
-  console.log("\n👉 For more, visit our documentation website at https://lmstudio.ai/docs/welcome\n");
 }
+
 main();
