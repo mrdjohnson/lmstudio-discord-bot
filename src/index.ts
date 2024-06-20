@@ -96,6 +96,10 @@ async function activateDiscordSlashCommands() {
 
 
 async function main() {
+  const model = await getLLMSpecificModel();
+
+  if (!model) throw new Error('No models found');
+
   const slashCommandsActivated = await activateDiscordSlashCommands();
 
   if (!slashCommandsActivated) throw new Error('Unable to create or refresh bot (/) commands.');
@@ -113,6 +117,24 @@ async function main() {
 
     if (interaction.commandName === 'ping') {
       await interaction.reply('Pong!');
+    }
+
+    if (interaction.commandName === 'ask') {
+      // this might take a while, put the bot into a "thinking" state
+      await interaction.deferReply();
+
+      // we can assume `.getString('question')` has a value because we marked it as required on Discord
+      const question = interaction.options.getString('question')!;
+      console.log('User asked: "%s"', question);
+
+      try {
+        const response = await getModelResponse(question, model);
+
+        // replace our "deferred response" with an actual message
+        await interaction.editReply(response);
+      } catch (e) {
+        await interaction.editReply('Unable to answer that question');
+      }
     }
   });
 
