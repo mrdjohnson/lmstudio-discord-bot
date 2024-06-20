@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { LMStudioClient } from '@lmstudio/sdk';
+import { LMStudioClient, LLMSpecificModel } from '@lmstudio/sdk';
 import { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder } from 'discord.js';
 
 // ! in typescript just says these are not null
@@ -27,6 +27,17 @@ async function getLLMSpecificModel() {
   // const specificModel = await client.llm.get('lmstudio-community/gemma-1.1-2b-it-GGUF/gemma-1.1-2b-it-Q2_K.gguf')
 
   return model;
+}
+
+async function getModelResponse(userMessage: string, model: LLMSpecificModel) {
+  // send a system prompt (tell the model how it should "act;"), and the message we want the model to respond to
+  const prediction = await model.respond([
+    { role: 'system', content: 'You are a helpful discord bot responding with short and useful answers. Your name is lmstudio-bot' },
+    { role: 'user', content: userMessage },
+  ]);
+
+  // return what the model responded with
+  return prediction.content;
 }
 
 function createDiscordSlashCommands() {
@@ -99,6 +110,12 @@ async function main() {
 // // uncomment this if you want to test the slash command activation
 // activateDiscordSlashCommands().then(() => {
 //   console.log('Finished activating Discord / Commands');
+// });
+
+// // uncomment this if you want to test the response
+// getLLMSpecificModel().then(async model => {
+//   const response = await getModelResponse('Hello how are you today', model);
+//   console.log('responded with %s', response);
 // });
 
 main();
