@@ -46,8 +46,20 @@ function createDiscordSlashCommands() {
     .setDescription('A simple check to see if I am available')
     .toJSON();
 
+  const askCommand = new SlashCommandBuilder()
+    .setName('ask')
+    .setDescription('Ask LM Studio Bot a question.')
+    // lets create a specific field to look for our question
+    .addStringOption(option => (
+      option.setName('question')
+        .setDescription('What is your question.')
+        .setRequired(true)
+    ))
+    .toJSON();
+
   const allCommands = [
-    pingCommand
+    pingCommand,
+    askCommand
   ];
 
   // Gives a pretty-print view of the commands
