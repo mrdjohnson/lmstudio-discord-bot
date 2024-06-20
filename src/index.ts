@@ -61,6 +61,16 @@ async function main() {
     console.log(`Logged in as ${client.user?.tag}!`);
   });
 
+  // this is for responding to slash commands, not individual messages
+  client.on('interactionCreate', async interaction => {
+    // if we did not receive a command, lets ignore it
+    if (!interaction.isChatInputCommand()) return;
+
+    if (interaction.commandName === 'ping') {
+      await interaction.reply('Pong!');
+    }
+  });
+
   client.login(CLIENT_TOKEN);
 }
 
