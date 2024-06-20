@@ -7,6 +7,28 @@ const CLIENT_TOKEN = process.env.CLIENT_TOKEN!;
 const CLIENT_ID = process.env.CLIENT_ID!;
 const GUILD_ID = process.env.GUILD_ID!;
 
+async function getLLMSpecificModel() {
+  // create the client
+  const client = new LMStudioClient();
+
+  // get all the pre-loaded models
+  const loadedModels = await client.llm.listLoaded();
+
+  if (loadedModels.length === 0) {
+    throw new Error('No models loaded');
+  }
+
+  console.log('Using model:%s to respond!', loadedModels[0].identifier);
+
+  // grab the first available model
+  const model = await client.llm.get({ identifier: loadedModels[0].identifier });
+
+  // alternative
+  // const specificModel = await client.llm.get('lmstudio-community/gemma-1.1-2b-it-GGUF/gemma-1.1-2b-it-Q2_K.gguf')
+
+  return model;
+}
+
 function createDiscordSlashCommands() {
   const pingCommand = new SlashCommandBuilder()
     .setName('ping')
