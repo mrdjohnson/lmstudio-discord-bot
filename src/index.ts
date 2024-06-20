@@ -51,6 +51,10 @@ async function activateDiscordSlashCommands() {
 
 
 async function main() {
+  const slashCommandsActivated = await activateDiscordSlashCommands();
+
+  if (!slashCommandsActivated) throw new Error('Unable to create or refresh bot (/) commands.');
+
   const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
   client.on('ready', () => {
